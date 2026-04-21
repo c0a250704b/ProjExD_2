@@ -61,6 +61,22 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     bb_accs = [a for a in range(1, 11)]
     return bb_imgs, bb_accs
 
+def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
+    def rotozoom(rot):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), rot, 0.9)
+    kk_dict = {
+        ( 0,  0): rotozoom(0),
+        (+5,  0): rotozoom(0),
+        (+5, -5): rotozoom(45),
+        ( 0, -5): rotozoom(90),
+        (-5, -5): rotozoom(135),
+        (-5,  0): rotozoom(180),
+        (-5, +5): rotozoom(225),
+        ( 0, +5): rotozoom(270),
+        (+5, +5): rotozoom(315),
+    }
+    return kk_dict
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -78,6 +94,8 @@ def main():
     vx, vy = +5, +5
 
     bb_imgs, bb_accs = init_bb_imgs()
+
+    kk_imgs = get_kk_imgs()
 
     clock = pg.time.Clock()
     tmr = 0
@@ -110,6 +128,8 @@ def main():
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
+        kk_img = kk_imgs[tuple(sum_mv)]
         
         screen.blit(kk_img, kk_rct)
 
