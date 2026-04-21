@@ -34,12 +34,12 @@ def gameover(screen: pg.Surface) -> None:
     戻り値：なし
     """
     fin_img = pg.Surface((WIDTH, HEIGHT))
-    pg.draw.rect(fin_img, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT)) #  黒い短形の描画
-    fin_img.set_alpha(200) #  透明度の設定形
+    pg.draw.rect(fin_img, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))  # 黒い短形の描画
+    fin_img.set_alpha(200)  # 透明度の設定形
     fonto = pg.font.Font(None, 80)
     fin_txt = fonto.render("Game Over", True, (255, 255, 255))
     fin_img.blit(fin_txt, [WIDTH/2-100, HEIGHT/2])
-    fin_kk_img = pg.image.load("fig/8.png") #  画像のロード
+    fin_kk_img = pg.image.load("fig/8.png")  # 画像のロード
     fin_img.blit(fin_kk_img, [WIDTH/2-180, HEIGHT/2-10])
     fin_img.blit(fin_kk_img, [WIDTH/2+220, HEIGHT/2-10])
     screen.blit(fin_img, [0, 0])
@@ -56,7 +56,7 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     for r in range(1, 11):
         bb_img = pg.Surface((20*r, 20*r))
         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
-        bb_img.set_colorkey((0, 0, 0)) #  黒色の透過
+        bb_img.set_colorkey((0, 0, 0))  # 黒色の透過
         bb_imgs.append(bb_img)
     bb_accs = [a for a in range(1, 11)]
     return bb_imgs, bb_accs
@@ -68,10 +68,10 @@ def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
         ( 0,  0): rotozoom(0),
         (+5,  0): rotozoom(0),
         (+5, -5): rotozoom(45),
-        ( 0, -5): rotozoom(90),
-        (-5, -5): rotozoom(135),
-        (-5,  0): rotozoom(180),
-        (-5, +5): rotozoom(225),
+        ( 0, -5): rotozoom(0),
+        (-5, -5): rotozoom(-45),
+        (-5,  0): rotozoom(0),
+        (-5, +5): rotozoom(45),
         ( 0, +5): rotozoom(270),
         (+5, +5): rotozoom(315),
     }
@@ -117,14 +117,14 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
 
-        #  if key_lst[pg.K_UP]:
-        #      sum_mv[1] -= 5
-        #  if key_lst[pg.K_DOWN]:
-        #      sum_mv[1] += 5
-        #  if key_lst[pg.K_LEFT]:
-        #      sum_mv[0] -= 5
-        #  if key_lst[pg.K_RIGHT]:
-        #      sum_mv[0] += 5
+        # if key_lst[pg.K_UP]:
+        #     sum_mv[1] -= 5
+        # if key_lst[pg.K_DOWN]:
+        #     sum_mv[1] += 5
+        # if key_lst[pg.K_LEFT]:
+        #     sum_mv[0] -= 5
+        # if key_lst[pg.K_RIGHT]:
+        #     sum_mv[0] += 5
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
@@ -137,7 +137,7 @@ def main():
         avy = vy*bb_accs[min(tmr//500, 9)]
         bb_img = bb_imgs[min(tmr//500, 9)]
 
-        bb_rct.width = bb_img.get_rect().width #  Surfaceの大きさに合わせたwidth, heightの更新
+        bb_rct.width = bb_img.get_rect().width  # Surfaceの大きさに合わせたwidth, heightの更新
         bb_rct.height = bb_img.get_rect().height
 
         bb_rct.move_ip(avx, avy)
